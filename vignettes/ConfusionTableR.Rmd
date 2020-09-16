@@ -1,0 +1,195 @@
+---
+title: "ConfusionTableR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ConfusionTableR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+#bibliography: references.bib
+---
+
+```{r, include = FALSE, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.height= 5, 
+  fig.width=7
+)
+```
+
+
+This package allows for the rapid transformation of confusion matrix objects from the caret package and allows for these to be easily converted into data frame objects, as the objects are natively list object types. 
+
+## Why is this useful
+
+This is useful, as it allows for the list items to be turned into a transposed row and column data frame. I had the idea when working with a number of machine learning models and wanted to store the results in database tables, thus I wanted a way to have one row per model run. This is something that is not implemented in the excellent caret package created by Max Kuhn [https://cran.r-project.org/web/packages/caret/index.html].
+
+
+### Preparing the ML model to then evaluate
+
+The following approach shows how the single confusion matrix function can be used to flatten all the results of the caret confusion matrices down from the simple binary classification model. This example is implemented below:
+
+### Example:
+
+```{r getcaretdata, warning=FALSE, error=FALSE, message=FALSE, fig.height= 5, fig.width=7}
+library(ggplot2)
+library(caret)
+library(caretEnsemble)
+library(scales)
+library(mltools)
+
+# Load in the iris data set for this problem 
+data(iris)
+df <- iris
+# View the class distribution, as this is a multiclass problem, we can use the multi classification data table builder
+table(iris$Species)
+ggplot(data = iris,
+       aes(x=Species)) + geom_bar(aes(fill = Species), show.legend = FALSE) + theme_minimal()
+# We can see we have a balanced dataset. I will now create a simple test and train split on the data
+
+
+```
+```{r split_data, warning=FALSE, error=FALSE, message=FALSE, fig.height= 5, fig.width=7}
+train_split_idx <- caret::createDataPartition(df$Species, p = 0.75, list = FALSE)
+# Here we define a split index and we are now going to use a multiclass ML model to fit the data
+data_TRAIN <- df[train_split_idx, ]
+data_TEST <- df[-train_split_idx, ]
+str(data_TRAIN)
+
+```
+This now creates a 75% training set for training the ML model and we are going to use the remaining 25% as validation data to test the model. 
+
+```{r train_data, warning=FALSE, error=FALSE, message=FALSE, fig.height= 5, fig.width=7}
+rf_model <- caret::train(Species ~ .,
+                         data = df,
+                         method = "rf",
+                         metric = "accuracy")
+
+rf_model
+
+```
+
+The model is relatively accurate. This is not a lesson on machine learning, however we now know how well the model performs on the training set, we need to validate this with a confusion matrix. The Random Forest shows that it has been trained on greater than >2 classes so this moves from a binary model to a multi-classification model. The functions contained in the package work with binary and multiclassification methods. 
+
+## Using the native Confusion Matrix in CARET
+
+The native confusion matrix is excellent in CARET, however it is stored as a series of list items that need to be utilised together to compare model fit performance over time to make sure there is no underlying feature slippage and regression in performance. This is where my solution comes in.
+
+
+```{r conf_mat, warning=FALSE, error=FALSE, message=FALSE, fig.height= 5, fig.width=7}
+# Make a prediction on the fitted model with the test data
+rf_class <- predict(rf_model, newdata = data_TEST, type = "raw") 
+
+# Create a confusion matrix object
+cm <- confusionMatrix(rf_class,
+                      data_TEST[,names(data_TEST) %in% c("Species")])
+
+print(cm) 
+typeof(cm)
+```
+
+The outputs of the matrix are really useful, however I want to combine all this information into one row of a data frame for storing information in a data table and import into a database universe.
+
+
+## Using ConfusionTableR to collapse this data into a data frame
+
+The package has two functions for dealing with these types of problems, firstly I will show the multiclassification version and show how this can be implemented:
+
+### Example
+```{r using_multi_function, warning=FALSE, error=FALSE, message=FALSE, fig.height= 5, fig.width=7}
+# Implementing function to collapse data
+
+library(ConfusionTableR)
+mc_df <- ConfusionTableR::multi_class_cm(cm)
+names(mc_df)
+class(mc_df) # This has now been converted to a data frame
+
+```
+
+This data frame can now be used to store analyse these records over time i.e. looking at the machine learning statistics and if they depreciate or reduce upon different training runs. 
+
+## Using ConfusionTableR to collapse binary confusion matrix outputs
+
+Here we will the breast cancer dataset to perform this. The following steps in the block show how to prepare this dataset:
+
+### Example
+
+### Preparing data and fitting to model
+
+```{r load_cancer, warning=FALSE, error=FALSE, message=FALSE, fig.height= 5, fig.width=7}
+# Implementing function to collapse data
+data("BreastCancer", package = "mlbench")
+#Use complete cases of breast cancer
+breast <- BreastCancer[complete.cases(BreastCancer), ] #Create a copy
+breast <- breast[, -1]
+# The ML bench data shows the data in the mlbench package - this allows for a binary classification of benign vs malignant. We will use this for our ML model
+breast$Class <- factor(breast$Class) # Create as factor
+for(i in 1:9) {
+  breast[, i] <- as.numeric(as.character(breast[, i]))
+}
+
+# Train a ML model to fit to it
+# Split the data
+train_split_idx <- caret::createDataPartition(breast$Class, p = 0.75, list = FALSE)
+# Here we define a split index and we are now going to use a multiclass ML model to fit the data
+data_TRAIN <- breast[train_split_idx, ]
+data_TEST <- breast[-train_split_idx, ]
+# Fit a logistic regression model
+glm_model <- train(Class ~ Cl.thickness + Cell.size + Cell.shape + Marg.adhesion +                Normal.nucleoli,
+                   data = data_TRAIN,
+                   method = "glm",
+                   family = "binomial")
+
+glm_model
+
+
+```
+
+We now have our breast cancer binary model ready. Now we will fit a confusion matrix to this and use the tools in ConfusionTableR to output to data frame and build a visualisation of the confusion matrix. 
+
+### Predicting and fitting confusion matrix
+
+This snippet shows how to achieve this: 
+```{r predict_cm, warning=FALSE, error=FALSE, message=FALSE, fig.height= 5, fig.width=7}
+glm_class <- predict(glm_model, newdata = data_TEST, type = "raw") 
+
+# Create a confusion matrix object
+cm <- confusionMatrix(glm_class,
+                      data_TEST[,names(data_TEST) %in% c("Class")])
+
+print(cm)
+
+
+```
+
+Now this is where we will use the package to visualise and reduce to a data frame.
+
+### Binary Confusion Matrix Data Frame
+
+The following example shows how this is implemented:
+
+```{r binary_df, warning=FALSE, error=FALSE, message=FALSE, fig.height= 5, fig.width=7}
+
+names(ConfusionTableR::binary_class_cm(cm))
+
+
+```
+
+This is now in a data.frame class and can be used and saved as a single record to a database server to monitor confusion matrix performance over time.
+
+### Visualising the confusion matrix
+
+The last tool in the package produces a nice visual of the confusion matrix that can be used in presentations and papers to display the matrix and its associated summary statistics:
+
+```{r visual_confusion_matrix, warning=FALSE, error=FALSE, message=FALSE, fig.height= 5, fig.width=7}
+
+ConfusionTableR::binary_visualiseR(
+  cm_input = cm, class_label1 = "Benign", class_label2 = "Malignant",
+  quadrant_col1 = "#28ACB4", quadrant_col2 = "#4397D2", 
+  custom_title = "Breast Cancer Confusion Matrix", text_col= "black"
+)
+
+
+```
+
+These can be used in combination with the outputs from the CARET package to build up the analysis of how well the model fits and how well it will fit in the future, from the analysis of Cohen's Kappa value and other associated metrics. Please see: [] for a great reference. 
