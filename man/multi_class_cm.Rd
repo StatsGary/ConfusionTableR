@@ -8,8 +8,6 @@ multi_class_cm(caret_cm)
 }
 \arguments{
 \item{caret_cm}{confusion matrix generated from the caret library}
-
-\item{.script_name}{name to assign to the data frame for the model}
 }
 \value{
 returns a data frame containing the relevant confusion matrix statistics
@@ -18,6 +16,6 @@ returns a data frame containing the relevant confusion matrix statistics
 a confusion matrix object for multi classification machine learning problems.
 }
 \examples{
-multi_class_cm(caret_cm_object)
+multi_class_cm(caret_cm)
 }
 \keyword{internal}

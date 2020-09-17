@@ -1,14 +1,11 @@
 #' @title Multiple Confusion Matrix data frame
 #' @description a confusion matrix object for multi classification machine learning problems.
-#'
 #' @param caret_cm confusion matrix generated from the caret library
-#' @param .script_name name to assign to the data frame for the model
 #'
 #' @return returns a data frame containing the relevant confusion matrix statistics
 #' @keywords internal
 #' @import dplyr caret magrittr
-#'
-#' @examples multi_class_cm(caret_cm_object)
+#' @examples multi_class_cm(caret_cm)
 #' @export
 
 
@@ -73,8 +70,6 @@ multi_class_cm <- function(caret_cm){
 
 
   predict_new <- cbind(predict_new, summary_new)
-  predict_new %<>%
-    dplyr::mutate(cm_ts=Sys.time())
 
   return(predict_new)
 }

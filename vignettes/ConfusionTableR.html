@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>ConfusionTableR</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">ConfusionTableR</h1>
+
+
+
+<p>This package allows for the rapid transformation of confusion matrix objects from the caret package and allows for these to be easily converted into data frame objects, as the objects are natively list object types.</p>
+<div id="why-is-this-useful" class="section level2">
+<h2>Why is this useful</h2>
+<p>This is useful, as it allows for the list items to be turned into a transposed row and column data frame. I had the idea when working with a number of machine learning models and wanted to store the results in database tables, thus I wanted a way to have one row per model run. This is something that is not implemented in the excellent caret package created by Max Kuhn [<a href="https://cran.r-project.org/web/packages/caret/index.html" class="uri">https://cran.r-project.org/web/packages/caret/index.html</a>].</p>
+<div id="preparing-the-ml-model-to-then-evaluate" class="section level3">
+<h3>Preparing the ML model to then evaluate</h3>
+<p>The following approach shows how the single confusion matrix function can be used to flatten all the results of the caret confusion matrices down from the simple binary classification model. This example is implemented below:</p>
+</div>
+<div id="example" class="section level3">
+<h3>Example:</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(caret)</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(caretEnsemble)</a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="kw">library</span>(scales)</a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="kw">library</span>(mltools)</a>
+<a class="sourceLine" id="cb1-6" title="6"></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="co"># Load in the iris data set for this problem </span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="kw">data</span>(iris)</a>
+<a class="sourceLine" id="cb1-9" title="9">df &lt;-<span class="st"> </span>iris</a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="co"># View the class distribution, as this is a multiclass problem, we can use the multi classification data table builder</span></a>
+<a class="sourceLine" id="cb1-11" title="11"><span class="kw">table</span>(iris<span class="op">$</span>Species)</a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-13" title="13"><span class="co">#&gt;     setosa versicolor  virginica </span></a>
+<a class="sourceLine" id="cb1-14" title="14"><span class="co">#&gt;         50         50         50</span></a>
+<a class="sourceLine" id="cb1-15" title="15"><span class="kw">ggplot</span>(<span class="dt">data =</span> iris,</a>
+<a class="sourceLine" id="cb1-16" title="16">       <span class="kw">aes</span>(<span class="dt">x=</span>Species)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> Species), <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_minimal</span>()</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># We can see we have a balanced dataset. I will now create a simple test and train split on the data</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">train_split_idx &lt;-<span class="st"> </span>caret<span class="op">::</span><span class="kw">createDataPartition</span>(df<span class="op">$</span>Species, <span class="dt">p =</span> <span class="fl">0.75</span>, <span class="dt">list =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co"># Here we define a split index and we are now going to use a multiclass ML model to fit the data</span></a>
+<a class="sourceLine" id="cb3-3" title="3">data_TRAIN &lt;-<span class="st"> </span>df[train_split_idx, ]</a>
+<a class="sourceLine" id="cb3-4" title="4">data_TEST &lt;-<span class="st"> </span>df[<span class="op">-</span>train_split_idx, ]</a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="kw">str</span>(data_TRAIN)</a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="co">#&gt; &#39;data.frame&#39;:    114 obs. of  5 variables:</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="co">#&gt;  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 4.4 4.9 4.3 ...</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="co">#&gt;  $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 2.9 3.1 3 ...</span></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="co">#&gt;  $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.4 1.5 1.1 ...</span></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="co">#&gt;  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.1 0.1 ...</span></a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="co">#&gt;  $ Species     : Factor w/ 3 levels &quot;setosa&quot;,&quot;versicolor&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</span></a></code></pre></div>
+<p>This now creates a 75% training set for training the ML model and we are going to use the remaining 25% as validation data to test the model.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">rf_model &lt;-<span class="st"> </span>caret<span class="op">::</span><span class="kw">train</span>(Species <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb4-2" title="2">                         <span class="dt">data =</span> df,</a>
+<a class="sourceLine" id="cb4-3" title="3">                         <span class="dt">method =</span> <span class="st">&quot;rf&quot;</span>,</a>
+<a class="sourceLine" id="cb4-4" title="4">                         <span class="dt">metric =</span> <span class="st">&quot;accuracy&quot;</span>)</a>
+<a class="sourceLine" id="cb4-5" title="5"></a>
+<a class="sourceLine" id="cb4-6" title="6">rf_model</a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="co">#&gt; Random Forest </span></a>
+<a class="sourceLine" id="cb4-8" title="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="co">#&gt; 150 samples</span></a>
+<a class="sourceLine" id="cb4-10" title="10"><span class="co">#&gt;   4 predictor</span></a>
+<a class="sourceLine" id="cb4-11" title="11"><span class="co">#&gt;   3 classes: &#39;setosa&#39;, &#39;versicolor&#39;, &#39;virginica&#39; </span></a>
+<a class="sourceLine" id="cb4-12" title="12"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-13" title="13"><span class="co">#&gt; No pre-processing</span></a>
+<a class="sourceLine" id="cb4-14" title="14"><span class="co">#&gt; Resampling: Bootstrapped (25 reps) </span></a>
+<a class="sourceLine" id="cb4-15" title="15"><span class="co">#&gt; Summary of sample sizes: 150, 150, 150, 150, 150, 150, ... </span></a>
+<a class="sourceLine" id="cb4-16" title="16"><span class="co">#&gt; Resampling results across tuning parameters:</span></a>
+<a class="sourceLine" id="cb4-17" title="17"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-18" title="18"><span class="co">#&gt;   mtry  Accuracy   Kappa    </span></a>
+<a class="sourceLine" id="cb4-19" title="19"><span class="co">#&gt;   2     0.9455064  0.9175617</span></a>
+<a class="sourceLine" id="cb4-20" title="20"><span class="co">#&gt;   3     0.9462323  0.9186642</span></a>
+<a class="sourceLine" id="cb4-21" title="21"><span class="co">#&gt;   4     0.9484262  0.9219846</span></a>
+<a class="sourceLine" id="cb4-22" title="22"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-23" title="23"><span class="co">#&gt; Accuracy was used to select the optimal model using the largest value.</span></a>
+<a class="sourceLine" id="cb4-24" title="24"><span class="co">#&gt; The final value used for the model was mtry = 4.</span></a></code></pre></div>
+<p>The model is relatively accurate. This is not a lesson on machine learning, however we now know how well the model performs on the training set, we need to validate this with a confusion matrix. The Random Forest shows that it has been trained on greater than &gt;2 classes so this moves from a binary model to a multi-classification model. The functions contained in the package work with binary and multiclassification methods.</p>
+</div>
+</div>
+<div id="using-the-native-confusion-matrix-in-caret" class="section level2">
+<h2>Using the native Confusion Matrix in CARET</h2>
+<p>The native confusion matrix is excellent in CARET, however it is stored as a series of list items that need to be utilised together to compare model fit performance over time to make sure there is no underlying feature slippage and regression in performance. This is where my solution comes in.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># Make a prediction on the fitted model with the test data</span></a>
+<a class="sourceLine" id="cb5-2" title="2">rf_class &lt;-<span class="st"> </span><span class="kw">predict</span>(rf_model, <span class="dt">newdata =</span> data_TEST, <span class="dt">type =</span> <span class="st">&quot;raw&quot;</span>) </a>
+<a class="sourceLine" id="cb5-3" title="3"></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co"># Create a confusion matrix object</span></a>
+<a class="sourceLine" id="cb5-5" title="5">cm &lt;-<span class="st"> </span><span class="kw">confusionMatrix</span>(rf_class,</a>
+<a class="sourceLine" id="cb5-6" title="6">                      data_TEST[,<span class="kw">names</span>(data_TEST) <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Species&quot;</span>)])</a>
+<a class="sourceLine" id="cb5-7" title="7"></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="kw">print</span>(cm) </a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="co">#&gt; Confusion Matrix and Statistics</span></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="co">#&gt;             Reference</span></a>
+<a class="sourceLine" id="cb5-12" title="12"><span class="co">#&gt; Prediction   setosa versicolor virginica</span></a>
+<a class="sourceLine" id="cb5-13" title="13"><span class="co">#&gt;   setosa         12          0         0</span></a>
+<a class="sourceLine" id="cb5-14" title="14"><span class="co">#&gt;   versicolor      0         12         0</span></a>
+<a class="sourceLine" id="cb5-15" title="15"><span class="co">#&gt;   virginica       0          0        12</span></a>
+<a class="sourceLine" id="cb5-16" title="16"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-17" title="17"><span class="co">#&gt; Overall Statistics</span></a>
+<a class="sourceLine" id="cb5-18" title="18"><span class="co">#&gt;                                      </span></a>
+<a class="sourceLine" id="cb5-19" title="19"><span class="co">#&gt;                Accuracy : 1          </span></a>
+<a class="sourceLine" id="cb5-20" title="20"><span class="co">#&gt;                  95% CI : (0.9026, 1)</span></a>
+<a class="sourceLine" id="cb5-21" title="21"><span class="co">#&gt;     No Information Rate : 0.3333     </span></a>
+<a class="sourceLine" id="cb5-22" title="22"><span class="co">#&gt;     P-Value [Acc &gt; NIR] : &lt; 2.2e-16  </span></a>
+<a class="sourceLine" id="cb5-23" title="23"><span class="co">#&gt;                                      </span></a>
+<a class="sourceLine" id="cb5-24" title="24"><span class="co">#&gt;                   Kappa : 1          </span></a>
+<a class="sourceLine" id="cb5-25" title="25"><span class="co">#&gt;                                      </span></a>
+<a class="sourceLine" id="cb5-26" title="26"><span class="co">#&gt;  Mcnemar&#39;s Test P-Value : NA         </span></a>
+<a class="sourceLine" id="cb5-27" title="27"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-28" title="28"><span class="co">#&gt; Statistics by Class:</span></a>
+<a class="sourceLine" id="cb5-29" title="29"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-30" title="30"><span class="co">#&gt;                      Class: setosa Class: versicolor Class: virginica</span></a>
+<a class="sourceLine" id="cb5-31" title="31"><span class="co">#&gt; Sensitivity                 1.0000            1.0000           1.0000</span></a>
+<a class="sourceLine" id="cb5-32" title="32"><span class="co">#&gt; Specificity                 1.0000            1.0000           1.0000</span></a>
+<a class="sourceLine" id="cb5-33" title="33"><span class="co">#&gt; Pos Pred Value              1.0000            1.0000           1.0000</span></a>
+<a class="sourceLine" id="cb5-34" title="34"><span class="co">#&gt; Neg Pred Value              1.0000            1.0000           1.0000</span></a>
+<a class="sourceLine" id="cb5-35" title="35"><span class="co">#&gt; Prevalence                  0.3333            0.3333           0.3333</span></a>
+<a class="sourceLine" id="cb5-36" title="36"><span class="co">#&gt; Detection Rate              0.3333            0.3333           0.3333</span></a>
+<a class="sourceLine" id="cb5-37" title="37"><span class="co">#&gt; Detection Prevalence        0.3333            0.3333           0.3333</span></a>
+<a class="sourceLine" id="cb5-38" title="38"><span class="co">#&gt; Balanced Accuracy           1.0000            1.0000           1.0000</span></a>
+<a class="sourceLine" id="cb5-39" title="39"><span class="kw">typeof</span>(cm)</a>
+<a class="sourceLine" id="cb5-40" title="40"><span class="co">#&gt; [1] &quot;list&quot;</span></a></code></pre></div>
+<p>The outputs of the matrix are really useful, however I want to combine all this information into one row of a data frame for storing information in a data table and import into a database universe.</p>
+</div>
+<div id="using-confusiontabler-to-collapse-this-data-into-a-data-frame" class="section level2">
+<h2>Using ConfusionTableR to collapse this data into a data frame</h2>
+<p>The package has two functions for dealing with these types of problems, firstly I will show the multiclassification version and show how this can be implemented:</p>
+<div id="example-1" class="section level3">
+<h3>Example</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co"># Implementing function to collapse data</span></a>
+<a class="sourceLine" id="cb6-2" title="2"></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="kw">library</span>(ConfusionTableR)</a>
+<a class="sourceLine" id="cb6-4" title="4">mc_df &lt;-<span class="st"> </span>ConfusionTableR<span class="op">::</span><span class="kw">multi_class_cm</span>(cm)</a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="kw">names</span>(mc_df)</a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="co">#&gt;  [1] &quot;setosa : setosa&quot;                   &quot;setosa : versicolor&quot;              </span></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="co">#&gt;  [3] &quot;setosa : virginica&quot;                &quot;versicolor : setosa&quot;              </span></a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="co">#&gt;  [5] &quot;versicolor : versicolor&quot;           &quot;versicolor : virginica&quot;           </span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="co">#&gt;  [7] &quot;virginica : setosa&quot;                &quot;virginica : versicolor&quot;           </span></a>
+<a class="sourceLine" id="cb6-10" title="10"><span class="co">#&gt;  [9] &quot;virginica : virginica&quot;             &quot;Accuracy&quot;                         </span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="co">#&gt; [11] &quot;Kappa&quot;                             &quot;AccuracyLower&quot;                    </span></a>
+<a class="sourceLine" id="cb6-12" title="12"><span class="co">#&gt; [13] &quot;AccuracyUpper&quot;                     &quot;AccuracyNull&quot;                     </span></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="co">#&gt; [15] &quot;AccuracyPValue&quot;                    &quot;McnemarPValue&quot;                    </span></a>
+<a class="sourceLine" id="cb6-14" title="14"><span class="co">#&gt; [17] &quot;setosa : Sensitivity&quot;              &quot;setosa : Specificity&quot;             </span></a>
+<a class="sourceLine" id="cb6-15" title="15"><span class="co">#&gt; [19] &quot;setosa : Pos Pred Value&quot;           &quot;setosa : Neg Pred Value&quot;          </span></a>
+<a class="sourceLine" id="cb6-16" title="16"><span class="co">#&gt; [21] &quot;setosa : Precision&quot;                &quot;setosa : Recall&quot;                  </span></a>
+<a class="sourceLine" id="cb6-17" title="17"><span class="co">#&gt; [23] &quot;setosa : F1&quot;                       &quot;setosa : Prevalence&quot;              </span></a>
+<a class="sourceLine" id="cb6-18" title="18"><span class="co">#&gt; [25] &quot;setosa : Detection Rate&quot;           &quot;setosa : Detection Prevalence&quot;    </span></a>
+<a class="sourceLine" id="cb6-19" title="19"><span class="co">#&gt; [27] &quot;setosa : Balanced Accuracy&quot;        &quot;versicolor : Sensitivity&quot;         </span></a>
+<a class="sourceLine" id="cb6-20" title="20"><span class="co">#&gt; [29] &quot;versicolor : Specificity&quot;          &quot;versicolor : Pos Pred Value&quot;      </span></a>
+<a class="sourceLine" id="cb6-21" title="21"><span class="co">#&gt; [31] &quot;versicolor : Neg Pred Value&quot;       &quot;versicolor : Precision&quot;           </span></a>
+<a class="sourceLine" id="cb6-22" title="22"><span class="co">#&gt; [33] &quot;versicolor : Recall&quot;               &quot;versicolor : F1&quot;                  </span></a>
+<a class="sourceLine" id="cb6-23" title="23"><span class="co">#&gt; [35] &quot;versicolor : Prevalence&quot;           &quot;versicolor : Detection Rate&quot;      </span></a>
+<a class="sourceLine" id="cb6-24" title="24"><span class="co">#&gt; [37] &quot;versicolor : Detection Prevalence&quot; &quot;versicolor : Balanced Accuracy&quot;   </span></a>
+<a class="sourceLine" id="cb6-25" title="25"><span class="co">#&gt; [39] &quot;virginica : Sensitivity&quot;           &quot;virginica : Specificity&quot;          </span></a>
+<a class="sourceLine" id="cb6-26" title="26"><span class="co">#&gt; [41] &quot;virginica : Pos Pred Value&quot;        &quot;virginica : Neg Pred Value&quot;       </span></a>
+<a class="sourceLine" id="cb6-27" title="27"><span class="co">#&gt; [43] &quot;virginica : Precision&quot;             &quot;virginica : Recall&quot;               </span></a>
+<a class="sourceLine" id="cb6-28" title="28"><span class="co">#&gt; [45] &quot;virginica : F1&quot;                    &quot;virginica : Prevalence&quot;           </span></a>
+<a class="sourceLine" id="cb6-29" title="29"><span class="co">#&gt; [47] &quot;virginica : Detection Rate&quot;        &quot;virginica : Detection Prevalence&quot; </span></a>
+<a class="sourceLine" id="cb6-30" title="30"><span class="co">#&gt; [49] &quot;virginica : Balanced Accuracy&quot;</span></a>
+<a class="sourceLine" id="cb6-31" title="31"><span class="kw">class</span>(mc_df) <span class="co"># This has now been converted to a data frame</span></a>
+<a class="sourceLine" id="cb6-32" title="32"><span class="co">#&gt; [1] &quot;data.frame&quot;</span></a></code></pre></div>
+<p>This data frame can now be used to store analyse these records over time i.e. looking at the machine learning statistics and if they depreciate or reduce upon different training runs.</p>
+</div>
+</div>
+<div id="using-confusiontabler-to-collapse-binary-confusion-matrix-outputs" class="section level2">
+<h2>Using ConfusionTableR to collapse binary confusion matrix outputs</h2>
+<p>Here we will the breast cancer dataset to perform this. The following steps in the block show how to prepare this dataset:</p>
+<div id="example-2" class="section level3">
+<h3>Example</h3>
+</div>
+<div id="preparing-data-and-fitting-to-model" class="section level3">
+<h3>Preparing data and fitting to model</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co"># Implementing function to collapse data</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">data</span>(<span class="st">&quot;BreastCancer&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;mlbench&quot;</span>)</a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="co">#Use complete cases of breast cancer</span></a>
+<a class="sourceLine" id="cb7-4" title="4">breast &lt;-<span class="st"> </span>BreastCancer[<span class="kw">complete.cases</span>(BreastCancer), ] <span class="co">#Create a copy</span></a>
+<a class="sourceLine" id="cb7-5" title="5">breast &lt;-<span class="st"> </span>breast[, <span class="dv">-1</span>]</a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="co"># The ML bench data shows the data in the mlbench package - this allows for a binary classification of benign vs malignant. We will use this for our ML model</span></a>
+<a class="sourceLine" id="cb7-7" title="7">breast<span class="op">$</span>Class &lt;-<span class="st"> </span><span class="kw">factor</span>(breast<span class="op">$</span>Class) <span class="co"># Create as factor</span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">9</span>) {</a>
+<a class="sourceLine" id="cb7-9" title="9">  breast[, i] &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(breast[, i]))</a>
+<a class="sourceLine" id="cb7-10" title="10">}</a>
+<a class="sourceLine" id="cb7-11" title="11"></a>
+<a class="sourceLine" id="cb7-12" title="12"><span class="co"># Train a ML model to fit to it</span></a>
+<a class="sourceLine" id="cb7-13" title="13"><span class="co"># Split the data</span></a>
+<a class="sourceLine" id="cb7-14" title="14">train_split_idx &lt;-<span class="st"> </span>caret<span class="op">::</span><span class="kw">createDataPartition</span>(breast<span class="op">$</span>Class, <span class="dt">p =</span> <span class="fl">0.75</span>, <span class="dt">list =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb7-15" title="15"><span class="co"># Here we define a split index and we are now going to use a multiclass ML model to fit the data</span></a>
+<a class="sourceLine" id="cb7-16" title="16">data_TRAIN &lt;-<span class="st"> </span>breast[train_split_idx, ]</a>
+<a class="sourceLine" id="cb7-17" title="17">data_TEST &lt;-<span class="st"> </span>breast[<span class="op">-</span>train_split_idx, ]</a>
+<a class="sourceLine" id="cb7-18" title="18"><span class="co"># Fit a logistic regression model</span></a>
+<a class="sourceLine" id="cb7-19" title="19">glm_model &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>Cl.thickness <span class="op">+</span><span class="st"> </span>Cell.size <span class="op">+</span><span class="st"> </span>Cell.shape <span class="op">+</span><span class="st"> </span>Marg.adhesion <span class="op">+</span><span class="st">                </span>Normal.nucleoli,</a>
+<a class="sourceLine" id="cb7-20" title="20">                   <span class="dt">data =</span> data_TRAIN,</a>
+<a class="sourceLine" id="cb7-21" title="21">                   <span class="dt">method =</span> <span class="st">&quot;glm&quot;</span>,</a>
+<a class="sourceLine" id="cb7-22" title="22">                   <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)</a>
+<a class="sourceLine" id="cb7-23" title="23"></a>
+<a class="sourceLine" id="cb7-24" title="24">glm_model</a>
+<a class="sourceLine" id="cb7-25" title="25"><span class="co">#&gt; Generalized Linear Model </span></a>
+<a class="sourceLine" id="cb7-26" title="26"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-27" title="27"><span class="co">#&gt; 513 samples</span></a>
+<a class="sourceLine" id="cb7-28" title="28"><span class="co">#&gt;   5 predictor</span></a>
+<a class="sourceLine" id="cb7-29" title="29"><span class="co">#&gt;   2 classes: &#39;benign&#39;, &#39;malignant&#39; </span></a>
+<a class="sourceLine" id="cb7-30" title="30"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-31" title="31"><span class="co">#&gt; No pre-processing</span></a>
+<a class="sourceLine" id="cb7-32" title="32"><span class="co">#&gt; Resampling: Bootstrapped (25 reps) </span></a>
+<a class="sourceLine" id="cb7-33" title="33"><span class="co">#&gt; Summary of sample sizes: 513, 513, 513, 513, 513, 513, ... </span></a>
+<a class="sourceLine" id="cb7-34" title="34"><span class="co">#&gt; Resampling results:</span></a>
+<a class="sourceLine" id="cb7-35" title="35"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-36" title="36"><span class="co">#&gt;   Accuracy   Kappa    </span></a>
+<a class="sourceLine" id="cb7-37" title="37"><span class="co">#&gt;   0.9498719  0.8891186</span></a></code></pre></div>
+<p>We now have our breast cancer binary model ready. Now we will fit a confusion matrix to this and use the tools in ConfusionTableR to output to data frame and build a visualisation of the confusion matrix.</p>
+</div>
+<div id="predicting-and-fitting-confusion-matrix" class="section level3">
+<h3>Predicting and fitting confusion matrix</h3>
+<p>This snippet shows how to achieve this:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">glm_class &lt;-<span class="st"> </span><span class="kw">predict</span>(glm_model, <span class="dt">newdata =</span> data_TEST, <span class="dt">type =</span> <span class="st">&quot;raw&quot;</span>) </a>
+<a class="sourceLine" id="cb8-2" title="2"></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="co"># Create a confusion matrix object</span></a>
+<a class="sourceLine" id="cb8-4" title="4">cm &lt;-<span class="st"> </span><span class="kw">confusionMatrix</span>(glm_class,</a>
+<a class="sourceLine" id="cb8-5" title="5">                      data_TEST[,<span class="kw">names</span>(data_TEST) <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Class&quot;</span>)])</a>
+<a class="sourceLine" id="cb8-6" title="6"></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="kw">print</span>(cm)</a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="co">#&gt; Confusion Matrix and Statistics</span></a>
+<a class="sourceLine" id="cb8-9" title="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-10" title="10"><span class="co">#&gt;            Reference</span></a>
+<a class="sourceLine" id="cb8-11" title="11"><span class="co">#&gt; Prediction  benign malignant</span></a>
+<a class="sourceLine" id="cb8-12" title="12"><span class="co">#&gt;   benign       108         5</span></a>
+<a class="sourceLine" id="cb8-13" title="13"><span class="co">#&gt;   malignant      3        54</span></a>
+<a class="sourceLine" id="cb8-14" title="14"><span class="co">#&gt;                                           </span></a>
+<a class="sourceLine" id="cb8-15" title="15"><span class="co">#&gt;                Accuracy : 0.9529          </span></a>
+<a class="sourceLine" id="cb8-16" title="16"><span class="co">#&gt;                  95% CI : (0.9094, 0.9795)</span></a>
+<a class="sourceLine" id="cb8-17" title="17"><span class="co">#&gt;     No Information Rate : 0.6529          </span></a>
+<a class="sourceLine" id="cb8-18" title="18"><span class="co">#&gt;     P-Value [Acc &gt; NIR] : &lt;2e-16          </span></a>
+<a class="sourceLine" id="cb8-19" title="19"><span class="co">#&gt;                                           </span></a>
+<a class="sourceLine" id="cb8-20" title="20"><span class="co">#&gt;                   Kappa : 0.8953          </span></a>
+<a class="sourceLine" id="cb8-21" title="21"><span class="co">#&gt;                                           </span></a>
+<a class="sourceLine" id="cb8-22" title="22"><span class="co">#&gt;  Mcnemar&#39;s Test P-Value : 0.7237          </span></a>
+<a class="sourceLine" id="cb8-23" title="23"><span class="co">#&gt;                                           </span></a>
+<a class="sourceLine" id="cb8-24" title="24"><span class="co">#&gt;             Sensitivity : 0.9730          </span></a>
+<a class="sourceLine" id="cb8-25" title="25"><span class="co">#&gt;             Specificity : 0.9153          </span></a>
+<a class="sourceLine" id="cb8-26" title="26"><span class="co">#&gt;          Pos Pred Value : 0.9558          </span></a>
+<a class="sourceLine" id="cb8-27" title="27"><span class="co">#&gt;          Neg Pred Value : 0.9474          </span></a>
+<a class="sourceLine" id="cb8-28" title="28"><span class="co">#&gt;              Prevalence : 0.6529          </span></a>
+<a class="sourceLine" id="cb8-29" title="29"><span class="co">#&gt;          Detection Rate : 0.6353          </span></a>
+<a class="sourceLine" id="cb8-30" title="30"><span class="co">#&gt;    Detection Prevalence : 0.6647          </span></a>
+<a class="sourceLine" id="cb8-31" title="31"><span class="co">#&gt;       Balanced Accuracy : 0.9441          </span></a>
+<a class="sourceLine" id="cb8-32" title="32"><span class="co">#&gt;                                           </span></a>
+<a class="sourceLine" id="cb8-33" title="33"><span class="co">#&gt;        &#39;Positive&#39; Class : benign          </span></a>
+<a class="sourceLine" id="cb8-34" title="34"><span class="co">#&gt; </span></a></code></pre></div>
+<p>Now this is where we will use the package to visualise and reduce to a data frame.</p>
+</div>
+<div id="binary-confusion-matrix-data-frame" class="section level3">
+<h3>Binary Confusion Matrix Data Frame</h3>
+<p>The following example shows how this is implemented:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="kw">names</span>(ConfusionTableR<span class="op">::</span><span class="kw">binary_class_cm</span>(cm))</a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="co">#&gt;  [1] &quot;Pred_benign_Ref_benign&quot;       &quot;Pred_malignant_Ref_benign&quot;   </span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="co">#&gt;  [3] &quot;Pred_benign_Ref_malignant&quot;    &quot;Pred_malignant_Ref_malignant&quot;</span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="co">#&gt;  [5] &quot;Accuracy&quot;                     &quot;Kappa&quot;                       </span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="co">#&gt;  [7] &quot;AccuracyLower&quot;                &quot;AccuracyUpper&quot;               </span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="co">#&gt;  [9] &quot;AccuracyNull&quot;                 &quot;AccuracyPValue&quot;              </span></a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="co">#&gt; [11] &quot;McnemarPValue&quot;                &quot;Sensitivity&quot;                 </span></a>
+<a class="sourceLine" id="cb9-9" title="9"><span class="co">#&gt; [13] &quot;Specificity&quot;                  &quot;Pos.Pred.Value&quot;              </span></a>
+<a class="sourceLine" id="cb9-10" title="10"><span class="co">#&gt; [15] &quot;Neg.Pred.Value&quot;               &quot;Precision&quot;                   </span></a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="co">#&gt; [17] &quot;Recall&quot;                       &quot;F1&quot;                          </span></a>
+<a class="sourceLine" id="cb9-12" title="12"><span class="co">#&gt; [19] &quot;Prevalence&quot;                   &quot;Detection.Rate&quot;              </span></a>
+<a class="sourceLine" id="cb9-13" title="13"><span class="co">#&gt; [21] &quot;Detection.Prevalence&quot;         &quot;Balanced.Accuracy&quot;           </span></a>
+<a class="sourceLine" id="cb9-14" title="14"><span class="co">#&gt; [23] &quot;cm_ts&quot;</span></a></code></pre></div>
+<p>This is now in a data.frame class and can be used and saved as a single record to a database server to monitor confusion matrix performance over time.</p>
+</div>
+<div id="visualising-the-confusion-matrix" class="section level3">
+<h3>Visualising the confusion matrix</h3>
+<p>The last tool in the package produces a nice visual of the confusion matrix that can be used in presentations and papers to display the matrix and its associated summary statistics:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"></a>
+<a class="sourceLine" id="cb10-2" title="2">ConfusionTableR<span class="op">::</span><span class="kw">binary_visualiseR</span>(</a>
+<a class="sourceLine" id="cb10-3" title="3">  <span class="dt">cm_input =</span> cm, <span class="dt">class_label1 =</span> <span class="st">&quot;Benign&quot;</span>, <span class="dt">class_label2 =</span> <span class="st">&quot;Malignant&quot;</span>,</a>
+<a class="sourceLine" id="cb10-4" title="4">  <span class="dt">quadrant_col1 =</span> <span class="st">&quot;#28ACB4&quot;</span>, <span class="dt">quadrant_col2 =</span> <span class="st">&quot;#4397D2&quot;</span>, </a>
+<a class="sourceLine" id="cb10-5" title="5">  <span class="dt">custom_title =</span> <span class="st">&quot;Breast Cancer Confusion Matrix&quot;</span>, <span class="dt">text_col=</span> <span class="st">&quot;black&quot;</span></a>
+<a class="sourceLine" id="cb10-6" title="6">)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>These can be used in combination with the outputs from the CARET package to build up the analysis of how well the model fits and how well it will fit in the future, from the analysis of Cohen’s Kappa value and other associated metrics. Please see: [] for a great reference.</p>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -4,12 +4,10 @@
 \alias{binary_class_cm}
 \title{Binary Confusion Matrix data frame}
 \usage{
-binary_class_cm(caret_cm)
+binary_class_cm(cm)
 }
 \arguments{
-\item{caret_cm}{confusion matrix generated from the caret library}
-
-\item{.script_name}{name to assign to the data frame for the model}
+\item{cm}{confusion matrix generated from the caret library}
 }
 \value{
 returns a data frame containing the relevant confusion matrix statistics
@@ -18,6 +16,6 @@ returns a data frame containing the relevant confusion matrix statistics
 a confusion matrix object for binary classification machine learning problems.
 }
 \examples{
-binary_class_cm(caret_cm_object)
+binary_class_cm(cm)
 }
 \keyword{internal}
