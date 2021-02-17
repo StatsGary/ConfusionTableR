@@ -9,10 +9,22 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
-Imports: grDevices, graphics, caretEnsemble, mltools
-Depends: dplyr, base, stats, magrittr, caret
+Imports: grDevices, 
+         graphics, 
+         caretEnsemble, 
+         mltools, 
+         dplyr, 
+         base, 
+         stats, 
+         magrittr, 
+         caret, 
+         mlbench, 
+         lattice, 
+         scales, 
+         ggplot2
+Requires: 
 Suggests: 
-    testthat (>= 2.1.0), knitr, rmarkdown, COUNT, tidyr
+    testthat (>= 2.1.0), knitr, rmarkdown, tidyr
 VignetteBuilder: knitr
 NeedsCompilation: no
 Repository: CRAN

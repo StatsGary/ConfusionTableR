@@ -39,6 +39,6 @@ returns a data frame containing the relevant confusion matrix statistics
 a confusion matrix object for multi classification machine learning problems.
 }
 \examples{
-multi_class_cm(cm_input, class_label1="Class Negative",class_label2="Class Positive", quadrant_col1='#3F97D0',quadrant_col2='#F7AD50', custom_title="Confusion matrix",text_col="black", round_dig=2)
+multi_class_cm(cm_input, class_label1="Class Negative",class_label2="Class Positive")
 }
 \keyword{internal}

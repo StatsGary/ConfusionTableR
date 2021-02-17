@@ -14,7 +14,7 @@
 #' @keywords internal
 #' @import dplyr caret magrittr
 #'
-#' @examples multi_class_cm(cm_input, class_label1="Class Negative",class_label2="Class Positive", quadrant_col1='#3F97D0',quadrant_col2='#F7AD50', custom_title="Confusion matrix",text_col="black", round_dig=2)
+#' @examples multi_class_cm(cm_input, class_label1="Class Negative",class_label2="Class Positive")
 #' @export
 
 
@@ -22,6 +22,14 @@ binary_visualiseR <- function(cm_input, class_label1="Class Negative",
                               class_label2="Class Positive", quadrant_col1='#3F97D0',
                               quadrant_col2='#F7AD50', custom_title="Confusion matrix",
                               text_col="black", round_dig=2){
+
+
+  #Define globals
+
+
+
+
+
   layout(matrix(c(1,1,2)))
   par(mar=c(2,2,2,2))
   plot(c(100, 345), c(300, 450), type = "n", xlab="", ylab="", xaxt='n', yaxt='n')

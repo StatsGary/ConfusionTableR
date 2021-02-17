@@ -2,7 +2,7 @@
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.height= 5, 
+  fig.height= 5,
   fig.width=7
 )
 
@@ -13,7 +13,7 @@ library(caretEnsemble)
 library(scales)
 library(mltools)
 
-# Load in the iris data set for this problem 
+# Load in the iris data set for this problem
 data(iris)
 df <- iris
 # View the class distribution, as this is a multiclass problem, we can use the multi classification data table builder
@@ -36,20 +36,20 @@ str(data_TRAIN)
 rf_model <- caret::train(Species ~ .,
                          data = df,
                          method = "rf",
-                         metric = "accuracy")
+                         metric = "Accuracy")
 
 rf_model
 
 
 ## ----conf_mat, warning=FALSE, error=FALSE, message=FALSE, fig.height= 5, fig.width=7----
 # Make a prediction on the fitted model with the test data
-rf_class <- predict(rf_model, newdata = data_TEST, type = "raw") 
+rf_class <- predict(rf_model, newdata = data_TEST, type = "raw")
 
 # Create a confusion matrix object
 cm <- confusionMatrix(rf_class,
                       data_TEST[,names(data_TEST) %in% c("Species")])
 
-print(cm) 
+print(cm)
 typeof(cm)
 
 ## ----using_multi_function, warning=FALSE, error=FALSE, message=FALSE, fig.height= 5, fig.width=7----
@@ -90,7 +90,7 @@ glm_model
 
 
 ## ----predict_cm, warning=FALSE, error=FALSE, message=FALSE, fig.height= 5, fig.width=7----
-glm_class <- predict(glm_model, newdata = data_TEST, type = "raw") 
+glm_class <- predict(glm_model, newdata = data_TEST, type = "raw")
 
 # Create a confusion matrix object
 cm <- confusionMatrix(glm_class,
@@ -110,7 +110,7 @@ names(ConfusionTableR::binary_class_cm(cm))
 
 ConfusionTableR::binary_visualiseR(
   cm_input = cm, class_label1 = "Benign", class_label2 = "Malignant",
-  quadrant_col1 = "#28ACB4", quadrant_col2 = "#4397D2", 
+  quadrant_col1 = "#28ACB4", quadrant_col2 = "#4397D2",
   custom_title = "Breast Cancer Confusion Matrix", text_col= "black"
 )
 

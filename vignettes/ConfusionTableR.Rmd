@@ -37,6 +37,7 @@ library(caret)
 library(caretEnsemble)
 library(scales)
 library(mltools)
+library(mlbench)
 
 # Load in the iris data set for this problem 
 data(iris)
@@ -63,7 +64,7 @@ This now creates a 75% training set for training the ML model and we are going t
 rf_model <- caret::train(Species ~ .,
                          data = df,
                          method = "rf",
-                         metric = "accuracy")
+                         metric = "Accuracy")
 
 rf_model
 
@@ -101,6 +102,7 @@ The package has two functions for dealing with these types of problems, firstly 
 
 library(ConfusionTableR)
 mc_df <- ConfusionTableR::multi_class_cm(cm)
+print(mc_df)
 names(mc_df)
 class(mc_df) # This has now been converted to a data frame
 
@@ -171,7 +173,7 @@ The following example shows how this is implemented:
 ```{r binary_df, warning=FALSE, error=FALSE, message=FALSE, fig.height= 5, fig.width=7}
 
 names(ConfusionTableR::binary_class_cm(cm))
-
+print(ConfusionTableR::binary_class_cm(cm))
 
 ```
 
