@@ -4,8 +4,8 @@
 #' @param cm confusion matrix generated from the caret library
 #' @return returns a data frame containing the relevant confusion matrix statistics
 #' @keywords internal
-#' @import dplyr caret magrittr
-#' @examples binary_class_cm(cm_caret)
+#' @import dplyr caret magrittr caretEnsemble
+#' @examples binary_class_cm(cm)
 #' @export
 
 
@@ -13,9 +13,7 @@
 #if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 
 
-binary_class_cm <- function(cm_caret){
-  #cm <- caret::confusionMatrix(cm_caret)
-  cm <- cm_caret
+binary_class_cm <- function(cm){
   cm_table <- data.frame(cm$table)
   cm_table$PredLabel <- paste0("Pred_", cm_table$Prediction, "_Ref_", cm_table$Reference)
   cm_table <- dplyr::select(cm_table, PredLabel, Freq)
