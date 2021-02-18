@@ -1,4 +1,6 @@
-# ConfusionTableR - a package to flatten carets Confusion Matrix Outputs
+# ConfusionTableR - a package to convert confusion matrix outputs
+
+<p><img src = "inst/figures/ConfusionTableR.png" width = "125px" height = "150px" align="right"></p>
 
 This package was spurred from the motivation of storing confusion matrix outputs in a database, or data frame, in a row by row format, as we have to test many machine learning models and it is useful in storing the structures in a database. 
 
@@ -17,7 +19,11 @@ library(ConfusionTableR)
 
 This will download the package and now you can start to use the package with the ML outputs. The supporting Vignette will give the example usage and how to get the most out of the package. 
 
-I found this package to be really useful, as I frequently work with confusion matrices on the back of the CARET library - developed by `Max Kuhn` and his team. 
+I found this package to be really useful, as I frequently work with confusion matrices on the back of the CARET library - developed by [`Max Kuhn`](https://cran.r-project.org/web/packages/caret/caret.pdf) and his team. 
+
+The package aim is to make it easier to convert the outputs of the lists from caret and collapse these down into row-by-row entries, specifically designed for storing the outputs in a database or row by row data frame. 
+
+<strong>NOTE: this has been fully tested to work with GitHub and most checks against CRAN, but warnings remain, therefore it cannot be accepted by CRAN at this stage. I will keep developing it to get it on to CRAN. That is my mission.</strong>
 
 ### Package contents
 
