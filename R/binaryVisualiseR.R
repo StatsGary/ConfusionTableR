@@ -8,7 +8,8 @@
 #' @param round_dig rounding options
 #'
 #' @title Binary Visualiser - A Binary Confusion Matrix Visual
-#' @description a confusion matrix object for multi classification machine learning problems.
+#' @description a confusion matrix object for binary classification machine learning problems.
+#' Returns the outputs of the matrix into a row structure for storage in a database or data frame.
 #'
 #' @return returns a data frame containing the relevant confusion matrix statistics
 #' @keywords internal

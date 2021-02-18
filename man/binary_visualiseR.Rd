@@ -36,7 +36,8 @@ binary_visualiseR(
 returns a data frame containing the relevant confusion matrix statistics
 }
 \description{
-a confusion matrix object for multi classification machine learning problems.
+a confusion matrix object for binary classification machine learning problems.
+Returns the outputs of the matrix into a row structure for storage in a database or data frame.
 }
 \examples{
 multi_class_cm(cm_input, class_label1="Class Negative",class_label2="Class Positive")

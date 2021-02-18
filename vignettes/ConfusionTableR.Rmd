@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
   fig.width=7
 )
 ```
-
+<p><img src = "../inst/figures/ConfusionTableR.png" width = "125px" height = "150px" align="right"></p>
 
 This package allows for the rapid transformation of confusion matrix objects from the caret package and allows for these to be easily converted into data frame objects, as the objects are natively list object types. 
 
@@ -194,4 +194,8 @@ ConfusionTableR::binary_visualiseR(
 
 ```
 
-These can be used in combination with the outputs from the CARET package to build up the analysis of how well the model fits and how well it will fit in the future, from the analysis of Cohen's Kappa value and other associated metrics. Please see: [] for a great reference. 
+These can be used in combination with the outputs from the CARET package to build up the analysis of how well the model fits and how well it will fit in the future, from the analysis of Cohen's Kappa value and other associated metrics. 
+
+# Wrapping up 
+
+This has been created to aid in the storage of confusion matrix outputs into a flat row wise structure for storage in data tables, frames and data warehouses, as from experience we tend to monitor the test statistics for working with these matrices over time, when they have been retrained. 

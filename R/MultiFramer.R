@@ -1,5 +1,6 @@
 #' @title Multiple Confusion Matrix data frame
 #' @description a confusion matrix object for multi classification machine learning problems.
+#' Returns the outputs of the matrix into a row structure for storage in a database or data frame.
 #' @param caret_cm confusion matrix generated from the caret library
 #'
 #' @return returns a data frame containing the relevant confusion matrix statistics
