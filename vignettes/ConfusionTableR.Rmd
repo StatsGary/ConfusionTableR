@@ -194,7 +194,17 @@ ConfusionTableR::binary_visualiseR(
 
 ```
 
-These can be used in combination with the outputs from the CARET package to build up the analysis of how well the model fits and how well it will fit in the future, from the analysis of Cohen's Kappa value and other associated metrics. 
+These can be used in combination with the outputs from the CARET package to build up the analysis of how well the model fits and how well it will fit in the future, from the analysis of Cohen's Kappa value and other associated metrics.
+
+## Getting variable importance
+
+The variable importance var_impeR model creates a variable importance chart and tibble. To use this function see below:
+
+```{r using_varimpeR}
+ConfusionTableR::var_impeR(glm_model)
+
+```
+This returns a tibble with the variable importance values and an associated chart to display the variable importance. 
 
 # Wrapping up 
 

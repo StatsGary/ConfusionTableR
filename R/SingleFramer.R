@@ -4,7 +4,7 @@
 #' @param cm confusion matrix generated from the caret library
 #' @return returns a data frame containing the relevant confusion matrix statistics
 #' @keywords internal
-#' @import dplyr caret magrittr caretEnsemble
+#' @import dplyr caret magrittr
 #' @examples binary_class_cm(cm)
 #' @export
 

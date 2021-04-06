@@ -1,7 +1,7 @@
 Package: ConfusionTableR
 Type: Package
 Title: Creates varied sized data frames for trained caret models
-Version: 0.1.0
+Version: 1.0.1
 Author: Gary Hutson
 Maintainer: Gary Hutson <gary.hutson.uk@hotmail.co.uk>
 Description: Takes the outputs of a caret confusion matrix and allows for the quick converion of these list items to data frames.
@@ -21,10 +21,17 @@ Imports: grDevices,
          mlbench, 
          lattice, 
          scales, 
-         ggplot2
+         ggplot2,
+         tibble
 Requires: 
 Suggests: 
     testthat (>= 2.1.0), knitr, rmarkdown, tidyr
 VignetteBuilder: knitr
 NeedsCompilation: no
 Repository: CRAN
+Collate: 
+    'MultiFramer.R'
+    'SingleFramer.R'
+    'binaryVisualiseR.R'
+    'globals.R'
+    'var_impeR.R'
