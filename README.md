@@ -1,6 +1,7 @@
 # ConfusionTableR - a package to convert confusion matrix outputs
 
 <p><img src = "inst/figures/ConfusionTableR.png" width = "125px" height = "150px" align="right"></p>
+<div itemscope itemtype="https://schema.org/Person"><a itemprop="sameAs" content="https://orcid.org/0000-0003-3534-6143" href="https://orcid.org/0000-0003-3534-6143" target="orcid.widget" rel="me noopener noreferrer" style="vertical-align:top;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" style="width:1em;margin-right:.5em;" alt="ORCID iD icon">https://orcid.org/0000-0003-3534-6143</a></div>
 
 This package was spurred from the motivation of storing confusion matrix outputs in a database, or data frame, in a row by row format, as we have to test many machine learning models and it is useful in storing the structures in a database. 
 
