@@ -3,7 +3,7 @@ Type: Package
 Title: Creates varied sized data frames for trained caret models
 Version: 1.0.1
 Author: Gary Hutson
-Maintainer: Gary Hutson <gary.hutson.uk@hotmail.co.uk>
+Maintainer: Gary Hutson <hutsons-hacks@outlook.com>
 Description: Takes the outputs of a caret confusion matrix and allows for the quick converion of these list items to data frames.
 License: MIT + file LICENSE
 Encoding: UTF-8
