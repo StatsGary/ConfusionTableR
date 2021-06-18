@@ -26,6 +26,10 @@ The package aim is to make it easier to convert the outputs of the lists from ca
 
 <strong>NOTE: this has been fully tested to work with GitHub and most checks against CRAN, but warnings remain, therefore it cannot be accepted by CRAN at this stage. I will keep developing it to get it on to CRAN. That is my mission.</strong>
 
+## Vignette
+
+The vignette on how to use the package is available <a href="https://rpubs.com/StatsGary/783101">here</a>.
+
 ### Package contents
 
 The package contains three main functions for dealing with binary and multi-class prediction problems, and allows for row level views to be built. The package contents are:
