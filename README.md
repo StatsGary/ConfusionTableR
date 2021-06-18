@@ -30,13 +30,14 @@ The package aim is to make it easier to convert the outputs of the lists from ca
 
 The vignette on how to use the package is available <a href="https://rpubs.com/StatsGary/783101">here</a>.
 
-### Package contents
+## Package contents
 
 The package contains three main functions for dealing with binary and multi-class prediction problems, and allows for row level views to be built. The package contents are:
 
-- `binaryVisualiseR` - this function allows you to create a nice looking visual on the back of a binary classification task. 
-- `SingleFramer` - this is used for binary classification tasks only and the object passed must be a caret confusion matrix object and class
-- `MultiFramer` - this is used for multi-classification taks only. Refer to the vignette for guidance.
+- `binary_visualiseR` - this function allows you to create a nice looking visual on the back of a binary classification task. 
+- `binary_class_cm` - this is used for binary classification tasks only and the object passed must be a caret confusion matrix object and class
+- `multi_class_cm` - this is used for multi-classification taks only. Refer to the vignette for guidance.
+- `var_impeR` - this allows for a nice plot to be created on the back of the VARIMP function in caret, and associated tibble to review the data.
 
 ## Closing remarks
 
