@@ -26,7 +26,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-latest, r: '3.6', rspm: "https://packagemanager.rstudio.com/cran/latest"}
+          - {os: windows-latest, r: '4.3', rspm: "https://packagemanager.rstudio.com/cran/latest"}
         
     env:
       RSPM: ${{ matrix.config.rspm }}
