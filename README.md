@@ -1,4 +1,4 @@
-# ConfusionTableR - a package to tidy confusion matrix outputs to record level
+# ConfusionTableR - a package to tidy confusion matrix outputs for record level storage
 
 <p><a href="https://hutsons-hacks.info/"><img src = "man/figures/ConfusionTableR.png" width = "125px" height = "150px" align="right"></a></p>
 
