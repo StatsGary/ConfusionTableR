@@ -102,3 +102,8 @@ jobs:
         if: ${{ runner.os == 'Windows' && startsWith(steps.install-r.outputs.installed-r-version, '3.6' ) }}
         shell: bash
         run: echo "C:/Program Files/Git/usr/bin" >> $GITHUB_PATH
+
+      - name: Upload coverage reports to Codecov
+          uses: codecov/codecov-action@v4.0.1
+          with:
+            token: ${{ secrets.CODECOV_TOKEN }}
